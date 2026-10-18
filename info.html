@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="de" data-lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BikeCheck</title>
+<meta name="description" content="BikeCheck – warum es die App gibt, was sie kann, und wie du sie unterstützen kannst." />
+<meta name="color-scheme" content="light dark" />
+
+<!-- **Die Sprache steht fest, bevor etwas gezeichnet wird.** Stünde dieses
+     Stück am Ende der Seite, sähe ein englischer Besucher für einen Wimpern-
+     schlag die deutsche Fassung und dann die englische. -->
+<script>
+  (function () {
+    var gewaehlt = null;
+    try { gewaehlt = localStorage.getItem('bikecheck-sprache'); } catch (e) {}
+    var sprache = gewaehlt === 'en' || gewaehlt === 'de'
+      ? gewaehlt
+      : ((navigator.language || '').toLowerCase().indexOf('de') === 0 ? 'de' : 'en');
+    document.documentElement.setAttribute('data-lang', sprache);
+    document.documentElement.setAttribute('lang', sprache);
+  })();
+</script>
+
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6; margin: 0; padding: 28px 20px 64px; color: #1A1D21; background: #FFFFFF;
+  }
+  main { max-width: 46rem; margin: 0 auto; }
+  h1 { font-size: 1.9rem; margin: 0 0 4px; letter-spacing: -0.01em; }
+  h2 { font-size: 1.15rem; margin: 40px 0 10px; }
+  p { margin: 0 0 12px; }
+  a { color: #1D6FE0; }
+  ul { margin: 0 0 12px; padding-left: 1.2rem; }
+  li { margin-bottom: 6px; }
+  .lead { color: #5C6672; margin-bottom: 4px; font-size: 1.05rem; }
+  .rule { width: 76px; height: 5px; background: #1D6FE0; border-radius: 3px; margin: 22px 0 30px; }
+
+  /* ---- Sprachumschalter ----
+     Zwei Knöpfe statt eines Auswahlfeldes: Bei zwei Möglichkeiten ist eine
+     Liste, die man erst aufklappt, ein Umweg. Er steht oben rechts, weil ihn
+     dort sucht, wer ihn braucht. */
+  .lang { display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 18px; }
+  /* Der Knopf ist nur noch der Rahmen um die Flagge. Er bleibt mit 40 x 30 px
+     groß genug für einen Daumen – das ist das Maß, unter das ein Ziel auf dem
+     Handy nicht fallen sollte. */
+  .lang button {
+    width: 40px; height: 30px; padding: 0; border-radius: 7px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    border: 1px solid #D8DDE4; background: transparent; line-height: 0;
+  }
+  .lang svg { display: block; width: 100%; height: 100%; }
+  /* **Die gewählte Sprache ist die kräftige.** Eine blaue Fläche wie vorher
+     geht nicht mehr: Darauf läge die Flagge mit ihren eigenen Farben. Also
+     trägt die gewählte einen blauen Rahmen und steht in voller Farbe da, die
+     andere blasser. */
+  .lang button[aria-pressed="false"] { opacity: 0.45; }
+  .lang button[aria-pressed="true"] { border-color: #1D6FE0; box-shadow: 0 0 0 2px #CFE0FA; }
+  .lang button:focus-visible { outline: 2px solid #1D6FE0; outline-offset: 2px; }
+
+  /* ---- Spenden ---- */
+  .give { background: #F2F6FD; border: 1px solid #D6E3F8; border-radius: 12px; padding: 18px 20px; margin-top: 8px; }
+  .give dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; }
+  .give dt { color: #5C6672; font-size: 0.9rem; }
+  .give dd { margin: 0; font-weight: 600; }
+  /* Die IBAN in einer Schrift mit festem Schritt: So stehen die Vierergruppen
+     untereinander, und beim Abtippen verrutscht nichts. */
+  .iban { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    letter-spacing: 0.02em; word-break: break-word; }
+
+  .nav { margin: 44px 0 0; padding-top: 16px; border-top: 1px solid #E1E5EA; font-size: 0.95rem; }
+  .nav a { margin-right: 16px; display: inline-block; }
+  .foot { margin-top: 24px; color: #5C6672; font-size: 0.9rem; }
+
+  /* Was nicht zur gewählten Sprache gehört, ist weg – nicht nur unsichtbar,
+     sondern aus dem Fluss heraus, damit keine Lücken bleiben. */
+  html[data-lang="de"] [data-lang="en"] { display: none; }
+  html[data-lang="en"] [data-lang="de"] { display: none; }
+
+  @media (prefers-color-scheme: dark) {
+    body { color: #ECEFF3; background: #15181C; }
+    a { color: #6FA8F5; }
+    .lead, .foot, .give dt { color: #9AA3AD; }
+    .nav { border-top-color: #2A2F36; }
+    .lang button { border-color: #2A2F36; }
+    .lang button[aria-pressed="true"] { border-color: #6FA8F5; box-shadow: 0 0 0 2px #1C3557; }
+    .give { background: #182233; border-color: #24334B; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <div class="lang">
+    <button type="button" data-set="de" aria-pressed="true" title="Deutsch" aria-label="Deutsch">
+      <svg viewBox="0 0 5 3" role="img" aria-hidden="true" preserveAspectRatio="none">
+        <rect width="5" height="1" y="0" fill="#000000" />
+        <rect width="5" height="1" y="1" fill="#DD0000" />
+        <rect width="5" height="1" y="2" fill="#FFCE00" />
+      </svg>
+    </button>
+    <button type="button" data-set="en" aria-pressed="false" title="English" aria-label="English">
+      <!-- Der Union Jack in seiner üblichen kurzen Form: das weiße Andreaskreuz
+           liegt unter dem roten, und das rote ist auf der einen Seite jeder
+           Diagonale beschnitten – daher der Ausschnitt. -->
+      <svg viewBox="0 0 60 30" role="img" aria-hidden="true" preserveAspectRatio="none">
+        <clipPath id="uk-diagonal">
+          <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z" />
+        </clipPath>
+        <rect width="60" height="30" fill="#012169" />
+        <path d="M0,0 L60,30 M60,0 L0,30" stroke="#FFFFFF" stroke-width="6" />
+        <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4"
+          clip-path="url(#uk-diagonal)" />
+        <path d="M30,0 V30 M0,15 H60" stroke="#FFFFFF" stroke-width="10" />
+        <path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6" />
+      </svg>
+    </button>
+  </div>
+
+  <h1>BikeCheck</h1>
+  <p class="lead" data-lang="de">Die App, die mitzählt, wie weit jedes einzelne Teil an deinem Rad schon gelaufen ist.</p>
+  <p class="lead" data-lang="en">The app that keeps track of how far every single part on your bike has already run.</p>
+  <div class="rule"></div>
+
+  <!-- ===================== Warum ===================== -->
+  <div data-lang="de">
+    <h2>Warum es BikeCheck gibt</h2>
+    <p>Ich fahre viel Rad, und irgendwann standen mehrere Räder bei mir. Kette, Kassette,
+    Bremsbeläge, Mäntel, Züge – jedes Teil hält nur eine bestimmte Strecke, und bei keinem
+    wusste ich noch, wie weit es schon gelaufen war. Mal lag ein Kassenzettel in einer
+    Schublade, mal stand etwas in einer Notiz auf dem Handy, meistens stand es nirgends.</p>
+    <p>Gesucht habe ich eine App, die mir das abnimmt. Gefunden habe ich keine, die meinen
+    Ansprüchen gerecht wurde. Die eine sah nur ein Rad vor, die andere kannte von allen
+    Verschleißteilen nur die Kette, die dritte wollte ein Abo für etwas, das im Grunde eine
+    Rechnung ist. Vor allem fehlte überall das, worum es mir ging: alle Teile auf einen Blick,
+    an jedem Rad.</p>
+    <p>Also habe ich sie selbst gebaut. BikeCheck zählt die Kilometer jeder Fahrt auf genau die
+    Teile, die an diesem Rad gerade montiert sind, und meldet sich rechtzeitig, bevor eines am
+    Ende seiner Strecke ist.</p>
+    <p>Das spart Geld, und zwar an zwei Stellen. Eine Kette, die rechtzeitig getauscht wird,
+    kostet dreißig Euro. Eine, die zu lange gefahren wird, nimmt Kassette und Kettenblätter mit
+    und kostet ein Vielfaches davon. Und was man noch im Keller liegen hat, kauft man nicht
+    zum zweiten Mal.</p>
+
+    <h2>Was die App kann</h2>
+    <ul>
+      <li>Verschleißteile, Ausrüstung und Wartung – je Rad, mit eigenem Intervall und einer
+      Warnung, bevor es zu spät ist.</li>
+      <li>Fahrten kommen von Hand hinein, als GPX-, TCX- oder FIT-Datei, als Tabelle aus Garmin
+      Connect oder Strava – oder von selbst über eine Verbindung mit intervals.icu oder Strava.</li>
+      <li>Ein Teil lässt sich demontieren, aufheben und später an einem anderen Rad weiterfahren.
+      Seine Kilometer bleiben daran.</li>
+      <li>Alle Kosten je Rad und je Jahr, dazu ein farbiger PDF-Bericht.</li>
+      <li>Die Radhistorie jedes Rades auf einen Blick: wer es wann hatte und wie weit er
+      damit gefahren ist, als übersichtlicher PDF-Bericht. Verkaufst du ein Rad, passt die
+      App alles von selbst an und legt dem Käufer eine Datei mit, aus der seine App
+      weiterzählt.</li>
+      <li>Luftdruckrechner, Radeinstellungen samt Hilfe bei Problemen mit der Sitzposition,
+      Videoanleitungen zum Selbstschrauben und die Suche nach einer Werkstatt in der Nähe.</li>
+      <li>Eine Sicherung deiner Daten – von Hand als Datei oder von selbst in einen Ordner
+      in der Cloud, täglich, wöchentlich oder monatlich.</li>
+      <li>Alles bleibt auf deinem Gerät. Kein Konto, keine Werbung, keine Weitergabe deiner Daten.</li>
+    </ul>
+
+    <h2>Spenden</h2>
+    <p>BikeCheck ist in erster Linie für mich selbst entstanden. Dass die App jetzt auch anderen
+    hilft, ist das Schönste daran. Über jede Person, der sie dasselbe abnimmt wie mir, freue ich
+    mich.</p>
+    <p>Was bleibt, sind die Kosten, die anfallen, damit es die App überhaupt im App
+    Store gibt – das Entwicklerprogramm bei Apple, das jedes Jahr fällig wird, und was sonst
+    noch drumherum hängt.</p>
+    <p>Wenn dir BikeCheck etwas wert ist, kannst du mich mit einer freiwilligen Spende
+    unterstützen. Vielen Dank!</p>
+    <div class="give">
+      <dl>
+        <dt>Kontoinhaber</dt>
+        <dd data-feld="name">Birger Westphal</dd>
+        <dt>IBAN</dt>
+        <dd class="iban" data-feld="iban">DE72 2022 0800 0045 8219 65</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- ===================== Why ===================== -->
+  <div data-lang="en">
+    <h2>Why BikeCheck exists</h2>
+    <p>I ride a lot, and at some point there were several bikes in my cellar. Chain, cassette,
+    brake pads, tyres, cables – every part only lasts a certain distance, and for none of them
+    did I still know how far it had already run. Sometimes a receipt was in a drawer, sometimes
+    a note on my phone, most of the time nowhere at all.</p>
+    <p>What I was looking for was an app that would keep track for me. I never found one that met
+    what I wanted. One only allowed a single bike, another knew the chain and nothing else of all
+    the wearing parts, a third wanted a subscription for what is essentially a running total.
+    Above all, the thing I actually cared about was missing everywhere: every part at a glance,
+    on every bike.</p>
+    <p>So I built it myself. BikeCheck adds the distance of every ride to exactly those parts that
+    are fitted to that bike right now, and tells me in good time before one of them reaches the
+    end of its life.</p>
+    <p>That saves money in two places. A chain replaced in time costs thirty euros. A chain ridden
+    too long takes the cassette and the chainrings with it and costs many times that. And what is
+    still lying in the cellar does not get bought twice.</p>
+
+    <h2>What the app does</h2>
+    <ul>
+      <li>Wearing parts, equipment and maintenance – per bike, each with its own interval and a
+      warning before it is too late.</li>
+      <li>Rides go in by hand, as a GPX, TCX or FIT file, as a table from Garmin Connect or
+      Strava – or on their own through a connection to intervals.icu or Strava.</li>
+      <li>A part can be taken off, kept, and later fitted to another bike. Its distance stays
+      with it.</li>
+      <li>All your costs per bike and per year, plus a colour PDF report.</li>
+      <li>The history of every bike at a glance: who had it when and how far they rode it, as
+      a clear PDF report. When you sell a bike, the app adjusts everything on its own and sends
+      a file along with it that the buyer's app carries on from.</li>
+      <li>A tyre pressure calculator, your bike fit measurements with help for problems with your
+      riding position, video guides for doing the work yourself, and a search for a workshop
+      nearby.</li>
+      <li>A backup of your data – by hand as a file, or on its own into a folder in the cloud,
+      daily, weekly or monthly.</li>
+      <li>Everything stays on your device. No account, no advertising, nothing passed on.</li>
+    </ul>
+
+    <h2>Donate</h2>
+    <p>BikeCheck was built first of all for myself. That it now helps other people is the nicest
+    part of it. I am glad about everyone it spares the same trouble it spares me.</p>
+    <p>What remains are the costs of getting the app into the App Store in the first place – the
+    Apple developer programme, which is due every year, and everything else around it.</p>
+    <p>If BikeCheck is worth something to you, you can support me with a voluntary donation.
+    Thank you very much!</p>
+    <div class="give">
+      <dl>
+        <dt>Account holder</dt>
+        <dd data-feld="name">Birger Westphal</dd>
+        <dt>IBAN</dt>
+        <dd class="iban" data-feld="iban">DE72 2022 0800 0045 8219 65</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- ===================== Fuß ===================== -->
+  <div class="nav">
+    <a href="https://bikecheckapp.github.io/impressum.html"><span data-lang="de">Impressum</span><span data-lang="en">Imprint</span></a>
+    <a href="https://bikecheckapp.github.io/datenschutz.html"><span data-lang="de">Datenschutz</span><span data-lang="en">Privacy</span></a>
+    <a href="https://bikecheckapp.github.io/nutzungsbedingungen.html"><span data-lang="de">Nutzungsbedingungen</span><span data-lang="en">Terms</span></a>
+  </div>
+  <p class="foot" data-lang="de">Fragen, Fehler, Wünsche:
+    <a href="mailto:support.bikecheck@gmail.com">support.bikecheck@gmail.com</a></p>
+  <p class="foot" data-lang="en">Questions, bugs, wishes:
+    <a href="mailto:support.bikecheck@gmail.com">support.bikecheck@gmail.com</a></p>
+
+</main>
+
+<script>
+  /* Der Umschalter. Ohne JavaScript bleibt es bei der Sprache, die der Kopf
+     gesetzt hat – die Seite ist dann vollständig lesbar, nur eben in einer
+     Sprache. */
+  (function () {
+    var knoepfe = document.querySelectorAll('.lang button');
+    function setze(sprache) {
+      document.documentElement.setAttribute('data-lang', sprache);
+      document.documentElement.setAttribute('lang', sprache);
+      for (var i = 0; i < knoepfe.length; i++) {
+        knoepfe[i].setAttribute('aria-pressed',
+          knoepfe[i].getAttribute('data-set') === sprache ? 'true' : 'false');
+      }
+      try { localStorage.setItem('bikecheck-sprache', sprache); } catch (e) {}
+    }
+    for (var i = 0; i < knoepfe.length; i++) {
+      knoepfe[i].addEventListener('click', function () {
+        setze(this.getAttribute('data-set'));
+      });
+    }
+    setze(document.documentElement.getAttribute('data-lang') || 'de');
+  })();
+</script>
+</body>
+</html>
