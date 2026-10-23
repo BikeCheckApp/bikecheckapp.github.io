@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>BikeCheck</title>
-<meta name="description" content="BikeCheck – warum es die App gibt, was sie kann, und wie du sie unterstützen kannst." />
+<meta name="description" content="BikeCheck – warum es die App gibt, was sie kann und wie du sie unterstützen kannst." />
 <meta name="color-scheme" content="light dark" />
 
 <!-- **Die Sprache steht fest, bevor etwas gezeichnet wird.** Stünde dieses
@@ -28,7 +28,22 @@
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     line-height: 1.6; margin: 0; padding: 28px 20px 64px; color: #1A1D21; background: #FFFFFF;
+    /* **Blocksatz mit automatischer Trennung** (22.10.2026, Wunsch des
+       Nutzers: „Generell soll überall im Blocksatz geschrieben werden. Trenne
+       automatisch, um größere Lücken in einer Zeile zu vermeiden.“).
+
+       Beides gehört zusammen: Blocksatz zieht jede Zeile auf die volle Breite,
+       indem er die Wortabstände streckt – und bei deutschen Wörtern wie
+       „Verschleißteile“ wird daraus auf einem Handy ein Loch. Die Trennung
+       füllt es. Das lang-Attribut am html-Element sagt dem Browser, nach
+       welchen Regeln er trennt, und der Sprachumschalter setzt es mit um. */
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
   }
+  /* **Überschriften bleiben linksbündig und ungetrennt.** Sie sind kurz, und
+     gerade bei ihnen täte der Blocksatz das Gegenteil von dem, was er soll. */
+  h1, h2 { text-align: left; hyphens: manual; -webkit-hyphens: manual; }
   main { max-width: 46rem; margin: 0 auto; }
   h1 { font-size: 1.9rem; margin: 0 0 4px; letter-spacing: -0.01em; }
   h2 { font-size: 1.15rem; margin: 40px 0 10px; }
@@ -37,7 +52,10 @@
   ul { margin: 0 0 12px; padding-left: 1.2rem; }
   li { margin-bottom: 6px; }
   .lead { color: #5C6672; margin-bottom: 4px; font-size: 1.05rem; }
-  .rule { width: 76px; height: 5px; background: #1D6FE0; border-radius: 3px; margin: 22px 0 30px; }
+  /* **Durchgängig bis zur anderen Seite** (22.10.2026, Wunsch des Nutzers).
+     Er ging über 76 px und hörte damit als einziges Element der Seite vor dem
+     Rand auf. */
+  .rule { width: 100%; height: 5px; background: #1D6FE0; border-radius: 3px; margin: 22px 0 30px; }
 
   /* ---- Sprachumschalter ----
      Zwei Knöpfe statt eines Auswahlfeldes: Bei zwei Möglichkeiten ist eine
@@ -145,32 +163,35 @@
   <!-- ===================== Warum ===================== -->
   <div data-lang="de">
     <h2>Warum es BikeCheck gibt</h2>
-    <p>Ich fahre viel Rad und irgendwann standen mehrere Räder bei mir. Kette, Kassette,
-    Bremsbeläge, Mäntel, Züge – jedes Teil hält nur eine bestimmte Strecke und bei keinem
-    wusste ich noch, wie weit es schon gelaufen war. Mal lag ein Kassenzettel in einer
-    Schublade, mal stand etwas in einer Notiz auf dem Handy, meistens stand es nirgends.</p>
+    <p>Ich fahre viel Rad und irgendwann standen mehrere Räder bei mir. Die Pflege meiner Räder
+    ist mir sehr wichtig und genau dabei verlor ich den Überblick. Kette, Kettenblätter,
+    Kassette, Bremsbeläge, Mäntel – jedes Teil hält nur eine bestimmte Strecke und bei keinem
+    wusste ich noch, wie weit es schon gelaufen war. Mal lag ein Kassenzettel in einer Schublade, mal
+    stand etwas in einer Notiz auf dem Handy, meistens stand es nirgends.</p>
     <p>Gesucht habe ich eine App, die mir das abnimmt. Gefunden habe ich keine, die meinen
-    Ansprüchen gerecht wurde. Die eine sah nur ein Rad vor, die andere kannte von allen
-    Verschleißteilen nur die Kette, die dritte wollte ein Abo für etwas, das im Grunde eine
-    Rechnung ist. Vor allem fehlte überall das, worum es mir ging: alle Teile auf einen Blick,
-    an jedem Rad.</p>
+    Ansprüchen gerecht wurde. Die eine kannte nur einen Bruchteil der Verschleißteile, die
+    zweite hatte keinen Überblick über die Wartungsarbeiten, die dritte wollte ein Abo für
+    etwas und die vierte ließ nur eine Verbindung mit Strava zu, die etwas kostet. Mir war außerdem wichtig, meine Radeinstellungen hinterlegen zu
+    können und Videos vorgeschlagen zu bekommen, die beim Tausch von Verschleißteilen und bei
+    der Wartung helfen. Vor allem fehlte überall das, worum es mir ging: Alles auf einen
+    Blick, an jedem Rad, an einem Ort.</p>
     <p>Also habe ich sie selbst gebaut. BikeCheck zählt die Kilometer jeder Fahrt auf genau die
-    Teile, die an diesem Rad gerade montiert sind, und meldet sich rechtzeitig, bevor eines am
+    Teile, die an diesem Rad gerade montiert sind und meldet sich rechtzeitig, bevor eines am
     Ende seiner Strecke ist.</p>
-    <p>Das spart Geld, und zwar an zwei Stellen. Eine Kette, die rechtzeitig getauscht wird,
-    kostet dreißig Euro. Eine, die zu lange gefahren wird, nimmt Kassette und Kettenblätter mit
-    und kostet ein Vielfaches davon. Und was man noch im Keller liegen hat, kauft man nicht
-    zum zweiten Mal.</p>
+    <p>Das spart Geld an zwei Stellen. Eine Kette, die rechtzeitig getauscht wird, kostet
+    dreißig Euro. Eine, die zu lange gefahren wird, nimmt Kassette und Kettenblätter mit und
+    kostet ein Vielfaches davon. Dazu kommt der Überblick über die demontierten Teile: Was noch
+    im Keller liegt, kauft man kein zweites Mal.</p>
 
     <h2>Was die App kann</h2>
     <ul>
       <li>Verschleißteile, Ausrüstung und Wartung – je Rad, mit eigenem Intervall und einer
       Warnung, bevor es zu spät ist.</li>
-      <li>Fahrten kommen von Hand hinein, als GPX-, TCX- oder FIT-Datei, als Tabelle aus Garmin
-      Connect oder Strava – oder von selbst über eine Verbindung mit intervals.icu oder Strava.</li>
+      <li>Fahrten kommen von Hand hinein als GPX-, TCX- oder FIT-Datei, als csv-Datei aus Strava
+      oder von selbst über eine Verbindung mit intervals.icu oder Strava.</li>
       <li>Ein Teil lässt sich demontieren, aufheben und später an einem anderen Rad weiterfahren.
       Seine Kilometer bleiben daran.</li>
-      <li>Alle Kosten je Rad und je Jahr, dazu ein farbiger PDF-Bericht.</li>
+      <li>Alle Kosten je Rad und je Jahr, dazu ein PDF-Bericht.</li>
       <li>Die Radhistorie jedes Rades auf einen Blick: wer es wann hatte und wie weit er
       damit gefahren ist, als übersichtlicher PDF-Bericht. Verkaufst du ein Rad, passt die
       App alles von selbst an und legt dem Käufer eine Datei mit, aus der seine App
@@ -178,7 +199,7 @@
       <li>Luftdruckrechner, Radeinstellungen samt Hilfe bei Problemen mit der Sitzposition,
       Videoanleitungen zum Selbstschrauben und die Suche nach einer Werkstatt in der Nähe.</li>
       <li>Eine Sicherung deiner Daten – von Hand als Datei oder von selbst in einen Ordner
-      in der Cloud, täglich, wöchentlich oder monatlich.</li>
+      in der Cloud.</li>
       <li>Alles bleibt auf deinem Gerät. Kein Konto, keine Werbung, keine Weitergabe deiner Daten.</li>
     </ul>
 
@@ -202,7 +223,7 @@
     <p>Was bleibt, sind die Kosten, die anfallen, damit es die App überhaupt im App
     Store gibt – das Entwicklerprogramm bei Apple und was sonst noch drumherum hängt.</p>
     <p>Wenn dir die App etwas bringt und du etwas zurückgeben möchtest, freue ich mich sehr
-    über eine freiwillige Spende.</p>
+    über eine kleine, freiwillige Spende.</p>
     <div class="give">
       <dl>
         <dt>Kontoinhaber</dt>
@@ -216,39 +237,43 @@
   <!-- ===================== Why ===================== -->
   <div data-lang="en">
     <h2>Why BikeCheck exists</h2>
-    <p>I ride a lot, and at some point there were several bikes in my cellar. Chain, cassette,
-    brake pads, tyres, cables – every part only lasts a certain distance, and for none of them
-    did I still know how far it had already run. Sometimes a receipt was in a drawer, sometimes
-    a note on my phone, most of the time nowhere at all.</p>
+    <p>I ride a lot, and at some point there were several bikes in my cellar. Looking after my
+    bikes matters a great deal to me and that is exactly where I lost track. Chain, chainrings, cassette, brake
+    pads, tyres – every part only lasts a certain distance, and for none of them did I still
+    know how far it had already run. Sometimes a receipt was in a drawer, sometimes a note on my
+    phone, most of the time nowhere at all.</p>
     <p>What I was looking for was an app that would keep track for me. I never found one that met
-    what I wanted. One only allowed a single bike, another knew the chain and nothing else of all
-    the wearing parts, a third wanted a subscription for what is essentially a running total.
-    Above all, the thing I actually cared about was missing everywhere: every part at a glance,
-    on every bike.</p>
+    what I wanted. One knew only a fraction of the wearing parts, the second had no overview of
+    the maintenance jobs, the third wanted a subscription for something and the fourth only
+    connected to Strava, which costs money. I also wanted somewhere to
+    keep my bike fit measurements and to be shown videos that help with replacing parts and with
+    the maintenance itself. Above all, the thing I actually cared about was missing everywhere:
+    everything at a glance, on every bike, in one place.</p>
     <p>So I built it myself. BikeCheck adds the distance of every ride to exactly those parts that
     are fitted to that bike right now, and tells me in good time before one of them reaches the
     end of its life.</p>
     <p>That saves money in two places. A chain replaced in time costs thirty euros. A chain ridden
-    too long takes the cassette and the chainrings with it and costs many times that. And what is
-    still lying in the cellar does not get bought twice.</p>
+    too long takes the cassette and the chainrings with it and costs many times that. On top of
+    that comes the overview of the parts you have taken off: what is still in the cellar does not
+    get bought a second time.</p>
 
     <h2>What the app does</h2>
     <ul>
       <li>Wearing parts, equipment and maintenance – per bike, each with its own interval and a
       warning before it is too late.</li>
-      <li>Rides go in by hand, as a GPX, TCX or FIT file, as a table from Garmin Connect or
-      Strava – or on their own through a connection to intervals.icu or Strava.</li>
+      <li>Rides go in by hand as a GPX, TCX or FIT file, as a CSV file from Strava, or on
+      their own through a connection to intervals.icu or Strava.</li>
       <li>A part can be taken off, kept, and later fitted to another bike. Its distance stays
       with it.</li>
-      <li>All your costs per bike and per year, plus a colour PDF report.</li>
+      <li>All your costs per bike and per year, plus a PDF report.</li>
       <li>The history of every bike at a glance: who had it when and how far they rode it, as
       a clear PDF report. When you sell a bike, the app adjusts everything on its own and sends
       a file along with it that the buyer's app carries on from.</li>
       <li>A tyre pressure calculator, your bike fit measurements with help for problems with your
       riding position, video guides for doing the work yourself, and a search for a workshop
       nearby.</li>
-      <li>A backup of your data – by hand as a file, or on its own into a folder in the cloud,
-      daily, weekly or monthly.</li>
+      <li>A backup of your data – by hand as a file, or on its own into a folder in the
+      cloud.</li>
       <li>Everything stays on your device. No account, no advertising, nothing passed on.</li>
     </ul>
 
@@ -266,7 +291,7 @@
     <p>What remains are the costs of getting the app into the App Store in the first place – the
     Apple developer programme and everything else around it.</p>
     <p>If the app does something for you and you would like to give something back, I would be
-    very glad about a voluntary donation.</p>
+    very glad about a small, voluntary donation.</p>
     <div class="give">
       <dl>
         <dt>Account holder</dt>
